@@ -132,7 +132,7 @@ namespace X1ListToMarkdown
 			{
 				// Build the release table header.
 				builder.AppendLine("## " + releasedGameYear.FirstOrDefault().ReleaseDateUS.Year.GetValueOrDefault());
-				builder.AppendLine("| Title | Developer(s) | Retail | Exclusive | Kinect | EU Date | NA Date | Score |");
+				builder.AppendLine("| Title | Developer(s) | Retail | Exclusive | Kinect | NA Date | EU Date | Score |");
 				builder.AppendLine("| - |:- |:-:|:-:|:-:|:-:|:-:|:-:|");
 
 				// Group all the released games by month inside the year.
@@ -157,8 +157,8 @@ namespace X1ListToMarkdown
 							game.Retail,
 							game.Exclusive,
 							game.Kinect,
-							game.ReleaseDateEU.ToString(),
 							game.ReleaseDateUS.ToString(),
+							game.ReleaseDateEU.ToString(),
 							MDMetacritic(game.MetacriticURL, game.MetacriticScore)
 						));
 					}
@@ -176,7 +176,7 @@ namespace X1ListToMarkdown
 			{
 				var yearInt = upcomingGameYear.FirstOrDefault().ReleaseDateUS.Year;
 				builder.AppendLine(string.Format("## {0}", yearInt == null ? "To Be Announced" : yearInt.Value.ToString()));
-				builder.AppendLine("| Title | Developer(s) | Exclusive | EU Date | NA Date | Trailer |");
+				builder.AppendLine("| Title | Developer(s) | Exclusive | NA Date | EU Date | Trailer |");
 				builder.AppendLine("| - |:- |:-:|:-:|:-:|:-:|:-:|");
 
 
@@ -197,8 +197,8 @@ namespace X1ListToMarkdown
 							MDSubreddit(game.Subreddit),
 							game.Developers,
 							game.Exclusive,
-							game.ReleaseDateEU.ToString(),
 							game.ReleaseDateUS.ToString(),
+							game.ReleaseDateEU.ToString(),
 							MDYouTube(game.Trailers)
 						));
 					}
