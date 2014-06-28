@@ -340,9 +340,9 @@ namespace X1ListToMarkdown
                         .GroupBy(_ => _.Date.Year);
                 foreach (var gwg360GameYear in gwg360GameYears.OrderBy(_ => _.Key))
                 {
-                    int year1 = gwg360GameYear.FirstOrDefault().Date.Year;
+                    int years = gwg360GameYear.FirstOrDefault().Date.Year;
 
-                    builder.AppendLine("## " + year1);
+                    builder.AppendLine("## " + years);
                     builder.AppendLine("| Name | Date | Retail |");
                     builder.AppendLine("|:- |:-:|:-:|");
 
