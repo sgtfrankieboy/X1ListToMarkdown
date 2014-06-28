@@ -318,15 +318,15 @@ namespace X1ListToMarkdown
                 builder.AppendLine("| Name | Date | Retail |");
                 builder.AppendLine("|:- |:-:|:-:|");
 
-                var cgwgGames = gwg
+                var cgwg360Games = gwg
                     .GroupBy(_ => _.Date.ToString("yyyy MMMM"));
-                foreach (var cgwgGame in cgwgGames.FirstOrDefault())
+                foreach (var cgwg360Game in cgwg360Games.FirstOrDefault())
                 {
                     builder.AppendLine(string.Format(
                             "| {0} | {1:MMM dd} | {2} |",
-                            Formatter.MDStoreLink(cgwgGame.Title, cgwgGame.StoreURL),
-                            cgwgGame.Date,
-                            cgwgGame.Retail
+                            Formatter.MDStoreLink(cgwg360Game.Title, cgwg360Game.StoreURL),
+                            cgwg360Game.Date,
+                            cgwg360Game.Retail
                             ));
                 }
 
@@ -336,26 +336,26 @@ namespace X1ListToMarkdown
 
                 builder.AppendLine("# Previous Games with Gold");
 
-                var gwgGameYears = gwg
+                var gwg360GameYears = gwg
                         .GroupBy(_ => _.Date.Year);
-                foreach (var gwgGameYear in gwgGameYears.OrderBy(_ => _.Key))
+                foreach (var gwg360GameYear in gwg360GameYears.OrderBy(_ => _.Key))
                 {
-                    int year = gwgGameYear.FirstOrDefault().Date.Year;
+                    int year = gwg360GameYear.FirstOrDefault().Date.Year;
 
                     builder.AppendLine("## " + year);
                     builder.AppendLine("| Name | Date | Retail |");
                     builder.AppendLine("|:- |:-:|:-:|");
 
 
-                    var gwgGameMonths = gwgGameYear
+                    var gwg360GameMonths = gwg360GameYear
                         .GroupBy(_ => _.Date.Month);
-                    foreach (var gwgGameMonth in gwgGameMonths.OrderBy(_ => _.Key))
+                    foreach (var gwg360GameMonth in gwg360GameMonths.OrderBy(_ => _.Key))
                     {
-                        string month = gwgGameMonth.FirstOrDefault().Date.ToString("MMMM");
+                        string month = gwg360GameMonth.FirstOrDefault().Date.ToString("MMMM");
 
                         builder.AppendLine(string.Format("| ***{0}*** | ~~-~~ | ~~-~~ |", month));
 
-                        foreach (var game in gwgGameMonth.OrderBy(_ => _.Date).ThenBy(_ => _.Title))
+                        foreach (var game in gwg360GameMonth.OrderBy(_ => _.Date).ThenBy(_ => _.Title))
                         {
                             builder.AppendLine(string.Format(
                                 "| {0} | {1:MMM dd} | {2} |",
