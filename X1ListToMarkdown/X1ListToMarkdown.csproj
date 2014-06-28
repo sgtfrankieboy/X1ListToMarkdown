@@ -58,7 +58,6 @@
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\360GwGItem.cs" />
     <Compile Include="Models\BetaItem.cs" />
     <Compile Include="Models\DwGItem.cs" />
     <Compile Include="Models\GameItem.cs" />

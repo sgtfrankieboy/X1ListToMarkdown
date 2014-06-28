@@ -104,7 +104,7 @@ namespace X1ListToMarkdown
 			{
 				builder.AppendLine("## Game Betas");
 				builder.AppendLine("| Name | Type | Start Date | End Date |");
-				builder.AppendLine("|:- |:-:|:-:|:-:|");
+				builder.AppendLine("|:-|:-|:-:|:-:|");
 
 				foreach (var betaGame in betaGames.OrderBy(_ => _.StartDate.GetDateTime()))
 				{
