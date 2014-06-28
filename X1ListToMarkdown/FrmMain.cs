@@ -314,12 +314,13 @@ namespace X1ListToMarkdown
 			|* 360 GAMES WITH GOLD *|
 			\***********************/
 
-                builder.AppendLine("# 360 Games with Gold");
+                builder.AppendLine("# Xbox 360 Games with Gold List");
+                builder.AppendLine("## 360 Games with Gold");
                 builder.AppendLine("| Name | Date | Retail |");
                 builder.AppendLine("|:- |:-:|:-:|");
 
                 var cgwg360Games = gwg360
-                    .GroupBy(_ => _.Date.ToString("yyyy MMMM"));
+                   .GroupBy(_ => _.Date.ToString("MMMM yyyy"));
                 foreach (var cgwg360Game in cgwg360Games.FirstOrDefault())
                 {
                     builder.AppendLine(string.Format(
@@ -340,9 +341,9 @@ namespace X1ListToMarkdown
                         .GroupBy(_ => _.Date.Year);
                 foreach (var gwg360GameYear in gwg360GameYears.OrderBy(_ => _.Key))
                 {
-                    int years = gwg360GameYear.FirstOrDefault().Date.Year;
+                    int year1 = gwg360GameYear.FirstOrDefault().Date.Year;
 
-                    builder.AppendLine("## " + years);
+                    builder.AppendLine("## " + year1);
                     builder.AppendLine("| Name | Date | Retail |");
                     builder.AppendLine("|:- |:-:|:-:|");
 
@@ -351,7 +352,7 @@ namespace X1ListToMarkdown
                         .GroupBy(_ => _.Date.Month);
                     foreach (var gwg360GameMonth in gwg360GameMonths.OrderBy(_ => _.Key))
                     {
-                        string month = gwg360GameMonth.FirstOrDefault().Date.ToString("MMMM");
+                        string month = gwg360GameMonth.FirstOrDefault().Date.ToString("yyyy MMMM");
 
                         builder.AppendLine(string.Format("| ***{0}*** | ~~-~~ | ~~-~~ |", month));
 
