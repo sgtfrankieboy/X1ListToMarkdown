@@ -44,6 +44,8 @@ namespace X1ListToMarkdown
 			var betas = reader.GetBetas();
 			var gwg = reader.GetGwG();
 			var dwg = reader.GetDwG();
+            var gwg360 = reader.GetGwG360();
+
 			DateTime currentDate = DateTime.UtcNow;
 
 
@@ -116,6 +118,7 @@ namespace X1ListToMarkdown
 						betaGame.EndDate.ToString()));
 				}
 			}
+
 			/******************\
 			|* RELEASED GAMES *|
 			\******************/

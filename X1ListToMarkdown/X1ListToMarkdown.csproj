@@ -61,6 +61,7 @@
     <Compile Include="Models\BetaItem.cs" />
     <Compile Include="Models\DwGItem.cs" />
     <Compile Include="Models\GameItem.cs" />
+    <Compile Include="Models\GwG360Item.cs" />
     <Compile Include="Models\GwGItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
