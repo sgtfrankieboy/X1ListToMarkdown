@@ -29,75 +29,21 @@ namespace X1ListToMarkdown
 			ofd.Filter = "Excel Files|*.xlsx";
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
-				txtCsvPath.Text = ofd.FileName;
+				txtPath.Text = ofd.FileName;
 			}
 		}
 
-		public IEnumerable<GameItem> GetGames(string path)
+		
+
+		private void btnConvertToWiki_Click(object sender, EventArgs e)
 		{
-			FileStream stream = File.OpenRead(path);
+			AllowInteraction(false);
+			ExcelReader reader = new ExcelReader(txtPath.Text);
 
-			IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-
-			excelReader.IsFirstRowAsColumnNames = true;
-			DataSet result = excelReader.AsDataSet();
-			stream.Close();
-
-			foreach (DataRow row in result.Tables[0].Rows)
-			{
-				if (string.IsNullOrWhiteSpace(row["Title"].ToString()))
-					continue;
-
-
-				yield return new GameItem()
-				{
-					Title = row["Title"].ToString(),
-					Developers = row["Developer(s)"].ToString(),
-					Subreddit = row["Subreddit"].ToString(),
-					Exclusive = row["Exclusive"].ToString(),
-					Kinect = row["Kinect"].ToString(),
-					Retail = row["Retail"].ToString(),
-					ReleaseDateEU = new SpecialDate(row["Release Date EU"].ToString()),
-					ReleaseDateUS = new SpecialDate(row["Release Date US"].ToString()),
-					MetacriticScore = row["Metacritic Score"].ToString(),
-					XboxStoreURL = row["Xbox Store URL"].ToString(),
-					MetacriticURL = row["Metacritic Link"].ToString(),
-					Trailers = row["Trailers"].ToString(),
-				};
-			}
-		}
-
-		public IEnumerable<GwGItem> GetGwG(string path)
-		{
-			FileStream stream = File.OpenRead(path);
-
-			IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-
-			excelReader.IsFirstRowAsColumnNames = true;
-			DataSet result = excelReader.AsDataSet();
-			stream.Close();
-
-			foreach (DataRow row in result.Tables[1].Rows)
-			{
-				if (string.IsNullOrWhiteSpace(row["Title"].ToString()))
-					continue;
-
-
-				yield return new GwGItem()
-				{
-					Title = row["Title"].ToString(),
-					Date = DateTime.Parse(row["Date"].ToString()),
-					Retail = row["Retail"].ToString(),
-					XboxStoreURL = row["Xbox Store URL"].ToString()
-				};
-			}
-		}
-
-		private void btnConvert_Click(object sender, EventArgs e)
-		{
-			btnCsvPath.Enabled = false;
-			var games = GetGames(txtCsvPath.Text);
-			var gwg = GetGwG(txtCsvPath.Text);
+			var games = reader.GetGames();
+			var betas = reader.GetBetas();
+			var gwg = reader.GetGwG();
+			var dwg = reader.GetDwG();
 			DateTime currentDate = DateTime.UtcNow;
 
 
@@ -105,20 +51,74 @@ namespace X1ListToMarkdown
 			StringBuilder builder = new StringBuilder();
 
 
+			/*********************\
+			|* Deals of the Week *|
+			\*********************/
+
+			var cdwgGames = dwg.Where(_ => _.StartDate.GetDateTime() <= DateTime.UtcNow && _.EndDate.GetDateTime() >= DateTime.Today);
+
+			if (cdwgGames.Any())
+			{
+				builder.AppendLine("## Deals of the Week");
+				builder.AppendLine("| Game | Start Date | End Date |");
+				builder.AppendLine("|:- |:-:|:-:|");
+
+				foreach (var cdwgGame in cdwgGames)
+				{
+					builder.AppendLine(string.Format(
+							"| {0} | {1} | {2} |",
+							Formatter.MDStoreLink(cdwgGame.Title, cdwgGame.StoreURL),
+							cdwgGame.StartDate.ToString(),
+							cdwgGame.EndDate.ToString()
+							));
+				}
+			}
+
+			/*******************\
+			|* GAMES WITH GOLD *|
+			\*******************/
+
 			builder.AppendLine("## Games with Gold");
 			builder.AppendLine("| Name | Date | Retail |");
-			builder.AppendLine("|:- |:- |:-:|");
+			builder.AppendLine("|:- |:-:|:-:|");
 
 			var cgwgGames = gwg
 				.GroupBy(_ => _.Date.ToString("yyyy MMMM"));
 			foreach(var cgwgGame in cgwgGames.FirstOrDefault()) {
 				builder.AppendLine(string.Format(
 						"| {0} | {1:MMM dd} | {2} |",
-						MDStoreLink(cgwgGame.Title, cgwgGame.XboxStoreURL),
+						Formatter.MDStoreLink(cgwgGame.Title, cgwgGame.StoreURL),
 						cgwgGame.Date,
 						cgwgGame.Retail
 						));
 			}
+
+			/**************\
+			|* GAME BETAS *|
+			\**************/
+
+			var betaGames = betas
+				.Where(_ => _.EndDate.GetDateTime() >= DateTime.UtcNow || _.EndDate.Year == 9999);
+
+			if (betaGames.Any())
+			{
+				builder.AppendLine("## Game Betas");
+				builder.AppendLine("| Name | Type | Start Date | End Date |");
+				builder.AppendLine("|:- |:-:|:-:|:-:|");
+
+				foreach (var betaGame in betaGames.OrderBy(_ => _.StartDate.GetDateTime()))
+				{
+					builder.AppendLine(string.Format(
+						"| {0} | {1} | {2} | {3}",
+						Formatter.MDLink(betaGame.Title, betaGame.Link),
+						betaGame.Type,
+						betaGame.StartDate.ToString(),
+						betaGame.EndDate.ToString()));
+				}
+			}
+			/******************\
+			|* RELEASED GAMES *|
+			\******************/
 
 
 			// Group all the released games by year.
@@ -133,7 +133,7 @@ namespace X1ListToMarkdown
 				// Build the release table header.
 				builder.AppendLine("## " + releasedGameYear.FirstOrDefault().ReleaseDateUS.Year.GetValueOrDefault());
 				builder.AppendLine("| Title | Developer(s) | Retail | Exclusive | Kinect | NA Date | EU Date | Score |");
-				builder.AppendLine("| - |:- |:-:|:-:|:-:|:-:|:-:|:-:|");
+				builder.AppendLine("|:- |:- |:-:|:-:|:-:|:-:|:-:|:-:|");
 
 				// Group all the released games by month inside the year.
 				var releasedGameMonths = releasedGameYear
@@ -151,19 +151,23 @@ namespace X1ListToMarkdown
 						// Build the game row.
 						builder.AppendLine(string.Format(
 							"| {0} {1} | {2} | {3} | {4} | {5} | {6} | {7} | {8} |",
-							MDStoreLink(game.Title, game.XboxStoreURL),
-							MDSubreddit(game.Subreddit),
+							Formatter.MDStoreLink(game.Title, game.XboxStoreURL),
+							Formatter.MDSubreddit(game.Subreddit),
 							game.Developers,
 							game.Retail,
 							game.Exclusive,
 							game.Kinect,
 							game.ReleaseDateUS.ToString(),
 							game.ReleaseDateEU.ToString(),
-							MDMetacritic(game.MetacriticURL, game.MetacriticScore)
+							Formatter.MDMetacritic(game.MetacriticURL, game.MetacriticScore)
 						));
 					}
 				}
 			}
+
+			/******************\
+			|* UPCOMING GAMES *|
+			\******************/
 
 			var upcomingGameYears = games
 					.Where(_ => _.ReleaseDateUS.GetDateTime() > currentDate && _.ReleaseDateUS.GetDateTime().Year < 9999)
@@ -177,7 +181,7 @@ namespace X1ListToMarkdown
 				var yearInt = upcomingGameYear.FirstOrDefault().ReleaseDateUS.Year;
 				builder.AppendLine(string.Format("## {0}", yearInt == null ? "To Be Announced" : yearInt.Value.ToString()));
 				builder.AppendLine("| Title | Developer(s) | Exclusive | NA Date | EU Date | Trailer |");
-				builder.AppendLine("| - |:- |:-:|:-:|:-:|:-:|:-:|");
+				builder.AppendLine("|:- |:- |:-:|:-:|:-:|:-:|:-:|");
 
 
 				var upcomingGameMonths = upcomingGameYear
@@ -194,21 +198,24 @@ namespace X1ListToMarkdown
 						builder.AppendLine(string.Format(
 							"| {0} {1} | {2} | {3} | {4} | {5} | {6} |",
 							game.Title,
-							MDSubreddit(game.Subreddit),
+							Formatter.MDSubreddit(game.Subreddit),
 							game.Developers,
 							game.Exclusive,
 							game.ReleaseDateUS.ToString(),
 							game.ReleaseDateEU.ToString(),
-							MDYouTube(game.Trailers)
+							Formatter.MDTrailer(game.Trailers)
 						));
 					}
 				}
 			}
 
+			/**************************\
+			|* GAMES TO BE ANNOUNCED  *|
+			\**************************/
 
 			builder.AppendLine("## TBA");
 			builder.AppendLine("| Title | Developer(s) | Exclusive |  Trailer |");
-			builder.AppendLine("| - |:- |:-:|:-:|:-:|");
+			builder.AppendLine("|:- |:- |:-:|:-:|");
 
 			var tbaGames = games
 					.Where(_ => _.ReleaseDateUS.GetDateTime() > currentDate && _.ReleaseDateUS.GetDateTime().Year == 9999);
@@ -218,16 +225,18 @@ namespace X1ListToMarkdown
 				builder.AppendLine(string.Format(
 					"| {0} {1} | {2} | {3} | {4} |",
 					game.Title,
-					MDSubreddit(game.Subreddit),
+					Formatter.MDSubreddit(game.Subreddit),
 					game.Developers,
 					game.Exclusive,
-					MDYouTube(game.Trailers)
+					Formatter.MDTrailer(game.Trailers)
 				));
 			}
 
+			/****************************\
+			|* PREVIOUS GAMES WITH GOLD *|
+			\****************************/
 
-
-			builder.AppendLine("# Previous GwG");
+			builder.AppendLine("# Previous Games with Gold");
 
 			var gwgGameYears = gwg
 					.GroupBy(_ => _.Date.Year);
@@ -237,7 +246,7 @@ namespace X1ListToMarkdown
 
 				builder.AppendLine("## " + year);
 				builder.AppendLine("| Name | Date | Retail |");
-				builder.AppendLine("|:- |:- |:-:|");
+				builder.AppendLine("|:- |:-:|:-:|");
 
 
 				var gwgGameMonths = gwgGameYear
@@ -252,10 +261,49 @@ namespace X1ListToMarkdown
 					{
 						builder.AppendLine(string.Format(
 							"| {0} | {1:MMM dd} | {2} |",
-							MDStoreLink(game.Title, game.XboxStoreURL),
+							Formatter.MDStoreLink(game.Title, game.StoreURL),
 							game.Date,
 							game.Retail
 							));
+					}
+				}
+
+			}
+
+
+			/******************************\
+			|* PREVIOUS DEALS OF THE WEEK *|
+			\******************************/
+
+			builder.AppendLine("# Previous Deals of the Week");
+
+			var dwgGameYears = dwg
+					.GroupBy(_ => _.StartDate.Year);
+			foreach (var dwgGameYear in dwgGameYears.OrderByDescending(_ => _.Key))
+			{
+				int year = dwgGameYear.FirstOrDefault().StartDate.Year.Value;
+
+				builder.AppendLine("## " + year);
+				builder.AppendLine("| Name | Date | Retail |");
+				builder.AppendLine("|:- |:-:|:-:|");
+
+
+				var gwgGameMonths = dwgGameYear
+					.GroupBy(_ => _.StartDate.Month);
+				foreach (var gwgGameMonth in gwgGameMonths.OrderByDescending(_ => _.Key))
+				{
+					string month = gwgGameMonth.FirstOrDefault().StartDate.HeaderName();
+
+					builder.AppendLine(string.Format("| ***{0}*** | ~~-~~ | ~~-~~ |", month));
+
+					foreach (var game in gwgGameMonth.OrderBy(_ => _.StartDate.GetDateTime()).ThenBy(_ => _.Title))
+					{
+						builder.AppendLine(string.Format(
+							"| {0} | {1} | {2} |",
+							Formatter.MDStoreLink(game.Title, game.StoreURL),
+							game.StartDate.ToString(),
+							game.EndDate.ToString()
+						));
 					}
 				}
 
@@ -264,70 +312,40 @@ namespace X1ListToMarkdown
 
 			txtResult.Text = builder.ToString();
 
-			btnCsvPath.Enabled = true;
+			AllowInteraction(true);
 		}
 
-		/// <summary>
-		/// Generate the Markdown for a generic link.
-		/// </summary>
-		/// <param name="text"></param>
-		/// <param name="url"></param>
-		/// <returns></returns>
-		public string MDStoreLink(string text, string url)
-		{
-			return string.Format("[{0}]({1} \"Xbox Store\")", text, url);
-		}
 
-		/// <summary>
-		/// Generate the Markdown for a subreddit link.
-		/// </summary>
-		/// <param name="subreddit"></param>
-		/// <returns></returns>
-		public string MDSubreddit(string subreddit)
+		private void AllowInteraction(bool status)
 		{
-			if (string.IsNullOrWhiteSpace(subreddit))
-				return string.Empty;
-			return string.Format("[^(subreddit)]({0} \"Subreddit\")", subreddit);
-		}
-		
-		/// <summary>
-		/// Generate the Markdown for a Metacritic Link.
-		/// </summary>
-		/// <param name="url">URL to the Metacritic website.</param>
-		/// <param name="score">Critic score from Metacritic.</param>
-		/// <returns></returns>
-		public string MDMetacritic(string url, string score)
-		{
-			if (string.IsNullOrWhiteSpace(score))
-				return string.Format("[tba](#t)");
-
-			int scoreInt = int.Parse(score.Replace("*", ""));
-			string color = "t";
-			if (scoreInt > 74)
-				color = "g";
-			else if (scoreInt > 49)
-				color = "y";
-			else
-				color = "r";
-
-			return string.Format("[{0}]({1}#{2})", score, url, color);
-		}
-
-		/// <summary>
-		/// Generate the Markdown for a YouTube Link.
-		/// </summary>
-		/// <param name="url">URL to the YouTube video.</param>
-		/// <returns></returns>
-		public string MDYouTube(string url)
-		{
-			if (string.IsNullOrWhiteSpace(url))
-				return string.Empty;
-			return string.Format("[^Trailer]({0} \"Trailer\")", url);
+			btnPath.Enabled = status;
+			btnConvertToWiki.Enabled = status;
+			btnConvertToSidebar.Enabled = status;
+			btnClear.Enabled = status;
+			btnCopy.Enabled = status;
+			txtResult.Enabled = status;
 		}
 
 		private void btnCopy_Click(object sender, EventArgs e)
 		{
 			Clipboard.SetText(txtResult.Text, TextDataFormat.UnicodeText);
+		}
+
+		private void txtResult_TextChanged(object sender, EventArgs e)
+		{
+			btnCopy.Enabled = !string.IsNullOrWhiteSpace(txtResult.Text);
+			btnClear.Enabled = !string.IsNullOrWhiteSpace(txtResult.Text);
+		}
+
+		private void btnClear_Click(object sender, EventArgs e)
+		{
+			txtResult.Clear();
+		}
+
+		private void txtPath_TextChanged(object sender, EventArgs e)
+		{
+			btnConvertToWiki.Enabled = !string.IsNullOrWhiteSpace(txtPath.Text);
+			btnConvertToSidebar.Enabled = !string.IsNullOrWhiteSpace(txtPath.Text);
 		}
 	}
 }
