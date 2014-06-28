@@ -314,11 +314,11 @@ namespace X1ListToMarkdown
 			|* 360 GAMES WITH GOLD *|
 			\***********************/
 
-                builder.AppendLine("## Games with Gold");
+                builder.AppendLine("# 360 Games with Gold");
                 builder.AppendLine("| Name | Date | Retail |");
                 builder.AppendLine("|:- |:-:|:-:|");
 
-                var cgwg360Games = gwg
+                var cgwg360Games = gwg360
                     .GroupBy(_ => _.Date.ToString("yyyy MMMM"));
                 foreach (var cgwg360Game in cgwg360Games.FirstOrDefault())
                 {
@@ -334,15 +334,15 @@ namespace X1ListToMarkdown
 			|* 360 PREVIOUS GAMES WITH GOLD *|
 			\********************************/
 
-                builder.AppendLine("# Previous Games with Gold");
+                builder.AppendLine("## Previous 360 Games with Gold");
 
-                var gwg360GameYears = gwg
+                var gwg360GameYears = gwg360
                         .GroupBy(_ => _.Date.Year);
                 foreach (var gwg360GameYear in gwg360GameYears.OrderBy(_ => _.Key))
                 {
-                    int year = gwg360GameYear.FirstOrDefault().Date.Year;
+                    int year1 = gwg360GameYear.FirstOrDefault().Date.Year;
 
-                    builder.AppendLine("## " + year);
+                    builder.AppendLine("## " + year1);
                     builder.AppendLine("| Name | Date | Retail |");
                     builder.AppendLine("|:- |:-:|:-:|");
 
