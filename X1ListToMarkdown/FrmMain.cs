@@ -310,6 +310,64 @@ namespace X1ListToMarkdown
 					}
 				}
 
+            /***********************\
+			|* 360 GAMES WITH GOLD *|
+			\***********************/
+
+                builder.AppendLine("## Games with Gold");
+                builder.AppendLine("| Name | Date | Retail |");
+                builder.AppendLine("|:- |:-:|:-:|");
+
+                var cgwgGames = gwg
+                    .GroupBy(_ => _.Date.ToString("yyyy MMMM"));
+                foreach (var cgwgGame in cgwgGames.FirstOrDefault())
+                {
+                    builder.AppendLine(string.Format(
+                            "| {0} | {1:MMM dd} | {2} |",
+                            Formatter.MDStoreLink(cgwgGame.Title, cgwgGame.StoreURL),
+                            cgwgGame.Date,
+                            cgwgGame.Retail
+                            ));
+                }
+
+            /********************************\
+			|* 360 PREVIOUS GAMES WITH GOLD *|
+			\********************************/
+
+                builder.AppendLine("# Previous Games with Gold");
+
+                var gwgGameYears = gwg
+                        .GroupBy(_ => _.Date.Year);
+                foreach (var gwgGameYear in gwgGameYears.OrderBy(_ => _.Key))
+                {
+                    int year = gwgGameYear.FirstOrDefault().Date.Year;
+
+                    builder.AppendLine("## " + year);
+                    builder.AppendLine("| Name | Date | Retail |");
+                    builder.AppendLine("|:- |:-:|:-:|");
+
+
+                    var gwgGameMonths = gwgGameYear
+                        .GroupBy(_ => _.Date.Month);
+                    foreach (var gwgGameMonth in gwgGameMonths.OrderBy(_ => _.Key))
+                    {
+                        string month = gwgGameMonth.FirstOrDefault().Date.ToString("MMMM");
+
+                        builder.AppendLine(string.Format("| ***{0}*** | ~~-~~ | ~~-~~ |", month));
+
+                        foreach (var game in gwgGameMonth.OrderBy(_ => _.Date).ThenBy(_ => _.Title))
+                        {
+                            builder.AppendLine(string.Format(
+                                "| {0} | {1:MMM dd} | {2} |",
+                                Formatter.MDStoreLink(game.Title, game.StoreURL),
+                                game.Date,
+                                game.Retail
+                                ));
+                        }
+                    }
+
+                }
+
 			}
 			
 
