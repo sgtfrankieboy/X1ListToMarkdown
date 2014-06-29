@@ -177,7 +177,7 @@ namespace X1ListToMarkdown
 
 			if (betaGames.Any())
 			{
-				builder.AppendLine("## Betas");
+				builder.AppendLine("# Betas");
 				builder.AppendLine("| Name | Type | Start Date | End Date |");
 				builder.AppendLine("|:-|:-|:-:|:-:|");
 
