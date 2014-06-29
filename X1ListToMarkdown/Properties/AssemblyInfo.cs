@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("X1ListToMarkdown")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("/r/xboxone Wiki Conversion Tool")]
+[assembly: AssemblyDescription("Creates Markdown listings from an Excel sheet for the /r/xboxone games wiki.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("X1ListToMarkdown")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyProduct("/r/xboxone Wiki Conversion Tool")]
+[assembly: AssemblyCopyright("Copyright /u/sgtfrankieboy ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
