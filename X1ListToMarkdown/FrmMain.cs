@@ -315,7 +315,8 @@ namespace X1ListToMarkdown
 			|* 360 GAMES WITH GOLD *|
 			\***********************/
 
-                builder.AppendLine("# 360 Games with Gold");
+                builder.AppendLine("***");
+                builder.AppendLine("# Xbox 360 Games with Gold List");
                 builder.AppendLine("| Name | Date | Retail |");
                 builder.AppendLine("|:- |:-:|:-:|");
 
@@ -335,7 +336,7 @@ namespace X1ListToMarkdown
 			|* 360 PREVIOUS GAMES WITH GOLD *|
 			\********************************/
 
-                builder.AppendLine("# Previous Games with Gold");
+                builder.AppendLine("# Previous Xbox 360 Games with Gold");
 
                 var gwg360GameYears = gwg360
                         .GroupBy(_ => _.Date.Year);
@@ -349,7 +350,7 @@ namespace X1ListToMarkdown
 
 
                     var gwg360GameMonths = gwg360GameYear
-                        .GroupBy(_ => _.Date.Month);
+                       .GroupBy(_ => _.Date.Month);
                     foreach (var gwg360GameMonth in gwg360GameMonths.OrderByDescending(_ => _.Key))
                     {
                         string month = gwg360GameMonth.FirstOrDefault().Date.ToString("MMMM");
@@ -368,6 +369,17 @@ namespace X1ListToMarkdown
                     }
 
                 }
+
+                builder.AppendLine("# Games with Gold FAQ");
+                builder.AppendLine("![](%%gwg%%)");
+                builder.AppendLine("#### When are games given out?");
+                builder.AppendLine("Games are given out on the 1st and 16th of each month.  If you don't 'purchase' them (for free) in that two week window, you will not be able to at a later time (i.e. they will be back at full price).");
+                builder.AppendLine("#### What games are given out?");
+                builder.AppendLine("The games range from retail to small titles.  Currently, two Xbox 360 games and one Xbox One game are given out per month.");
+                builder.AppendLine("#### Do you lose the games when your Gold subscription ends?");
+                builder.AppendLine("Yes (for Xbox One) and no (for Xbox 360).  On Xbox One, you lose access to Games with Gold games until you subscribe to gold, at which point you regain access to all previous titles you purchased for free.  On Xbox 360, every game you purchase from Games with Gold for free is there regardless of membership status.");
+                builder.AppendLine("#### Is the service temporary?");
+                builder.AppendLine("No.  Originally, Games with Gold was planned to end December 31st, 2013 but, after being well-received, the service [has become permanent.](http://news.xbox.com/2013/10/xbox-360-games-with-gold)");
 
 			}
 			
