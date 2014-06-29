@@ -177,7 +177,7 @@ namespace X1ListToMarkdown
 
 			if (betaGames.Any())
 			{
-				builder.AppendLine("# Betas");
+				builder.AppendLine("# Game Betas");
 				builder.AppendLine("| Name | Type | Start Date | End Date |");
 				builder.AppendLine("|:-|:-|:-:|:-:|");
 
@@ -270,9 +270,9 @@ namespace X1ListToMarkdown
 
 			StringBuilder builder = new StringBuilder();
 
-			/****************************\
-			|* PREVIOUS GAMES WITH GOLD *|
-			\****************************/
+			/*******************\
+			|* GAMES WITH GOLD *|
+			\*******************/
 
 			builder.AppendLine("# Xbox One");
 
@@ -308,9 +308,9 @@ namespace X1ListToMarkdown
 
 			}
 
-			/********************************\
-			|* 360 PREVIOUS GAMES WITH GOLD *|
-			\********************************/
+			/***********************\
+			|* 360 GAMES WITH GOLD *|
+			\***********************/
 
 			builder.AppendLine("# Xbox 360");
 
@@ -386,6 +386,11 @@ namespace X1ListToMarkdown
 			btnConvertToSidebar.Enabled = !string.IsNullOrWhiteSpace(txtPath.Text);
 			btnConvertToGwGWiki.Enabled = !string.IsNullOrWhiteSpace(txtPath.Text);
 			btnConvertToDwGWiki.Enabled = !string.IsNullOrWhiteSpace(txtPath.Text);
+		}
+
+		private void btnConvertToSidebar_Click(object sender, EventArgs e)
+		{
+
 		}
 
 		

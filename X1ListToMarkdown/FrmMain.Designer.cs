@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
 			this.txtPath = new System.Windows.Forms.TextBox();
 			this.btnPath = new System.Windows.Forms.Button();
 			this.btnConvertToGamesWiki = new System.Windows.Forms.Button();
@@ -113,6 +114,7 @@
 			this.btnConvertToSidebar.TabIndex = 5;
 			this.btnConvertToSidebar.Text = "Convert To Sidebar";
 			this.btnConvertToSidebar.UseVisualStyleBackColor = true;
+			this.btnConvertToSidebar.Click += new System.EventHandler(this.btnConvertToSidebar_Click);
 			// 
 			// btnClear
 			// 
@@ -166,9 +168,13 @@
 			this.Controls.Add(this.btnConvertToGamesWiki);
 			this.Controls.Add(this.btnPath);
 			this.Controls.Add(this.txtPath);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.MaximizeBox = false;
+			this.MaximumSize = new System.Drawing.Size(683, 574);
+			this.MinimumSize = new System.Drawing.Size(683, 574);
 			this.Name = "FrmMain";
-			this.Text = "X1 CSV To Markdown";
+			this.Text = "/r/xboxone Wiki Conversion Tool";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
