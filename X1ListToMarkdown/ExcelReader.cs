@@ -65,9 +65,21 @@ namespace X1ListToMarkdown
 			}
 		}
 
+        public IEnumerable<Models.GwG360Item> GetGwG360()
+        {
+            foreach (DataRow row in GetExcelTableRows(2))
+            {
+                if (string.IsNullOrWhiteSpace(row["Title"].ToString()))
+                    continue;
+
+
+                yield return new Models.GwG360Item(row);
+            }
+        }
+
 		public IEnumerable<Models.DwGItem> GetDwG()
 		{
-			foreach (DataRow row in GetExcelTableRows(2))
+			foreach (DataRow row in GetExcelTableRows(3))
 			{
 				if (string.IsNullOrWhiteSpace(row["Title"].ToString()))
 					continue;
@@ -78,7 +90,7 @@ namespace X1ListToMarkdown
 
 		public IEnumerable<Models.BetaItem> GetBetas()
 		{
-			foreach (DataRow row in GetExcelTableRows(3))
+			foreach (DataRow row in GetExcelTableRows(4))
 			{
 				if (string.IsNullOrWhiteSpace(row["Title"].ToString()))
 					continue;
@@ -86,5 +98,6 @@ namespace X1ListToMarkdown
 				yield return new Models.BetaItem(row);
 			}
 		}
-	}
+
+    }
 }
