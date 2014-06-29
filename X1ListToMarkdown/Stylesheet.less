@@ -1,0 +1,152 @@
+﻿/* #### Games Wiki Page Styling ####
+ * Author: /u/sgtfrankieboy
+ */
+
+.wiki-page-games,
+.wiki-page-gameswithgold ,
+.wiki-page-dealsoftheweek {
+	
+	table { 
+
+		a {
+			&[href$="#y"],
+			&[href$="#g"],
+			&[href$="#r"],
+			&[href$="#t"]{
+				color: #FFFFFF;
+				font-weight: bold;
+				font-family: Arial, Helvetica, sans-serif;
+				padding: 1px 4px;
+				opacity: .8;
+			}
+
+			&[href$="#y"] {
+				background-color: #ffcc33;
+			}
+
+			&[href$="#g"] {
+				background-color: #66cc33;
+			}
+
+			&[href$="#r"] {
+				background-color: #ff0000;
+			}
+
+			&[href$="#t"] {
+				color: #000000;
+				font-weight: normal;
+				background-color: #cccccc;
+				padding: 1px 2px;
+			}
+
+			&[href^="/r/"] {
+				width: 19px;
+				height: 16px;
+				vertical-align: top;
+				font-size: 0 !important;
+				background-image: url(%%wiki-games-icons%%);
+				background-position: 0px 16px;
+				display: inline-block;
+				opacity: .7;
+			}
+
+			&[href*="youtube."],
+			&[href*="youtu.be"] {
+				width: 22px;
+				height: 16px;
+				vertical-align: top;
+				font-size: 0 !important;
+				background-image: url(%%wiki-games-icons%%);
+				background-position: 0px 0px;
+				display: inline-block;
+				opacity: .7;
+			}
+
+			&[href^="/r/"]:hover,
+			&[href*="youtube."]:hover,
+			&[href*="youtu.be"]:hover {
+				opacity: 1;
+			}
+		}
+
+		.expando-button.video.collapsed {
+			display: none;
+		}
+
+		th {
+			color: #ffffff;
+			background: #107c10;
+			padding: 10px 5px;
+			border: 0;
+			min-width: 70px;
+			text-align: center;
+			cursor: default;
+
+			&:first-child {
+				text-align: left;
+				min-width: 250px;
+				max-width: 350px;
+			}
+
+			&:nth-child(2) {
+				text-align: left;
+				max-width: 250px;
+			}
+		}
+
+		td {
+			border: 0;
+			padding: 4px;
+
+
+			strong em {
+				margin: -4px;
+				font-size: 1em;
+				vertical-align: baseline;
+				background: #222222;
+				display: block;
+				height: 25px;
+				line-height: 25px;
+				padding-left: 10px;
+				color: #ffffff;
+				font-weight: bold;
+			}
+
+			del {
+				margin: -4px;
+				vertical-align: baseline;
+				background: #222222;
+				display: block;
+				height: 25px;
+				line-height: 25px;
+				padding-left: 10px;
+				color: #222222;
+				font-weight: bold;
+				text-decoration: none;
+				cursor: default;
+				font-size: 0em;
+			}
+		}
+
+		tr {
+
+			&:nth-child(even) {
+				background: #fefefe;
+			}
+
+			&:nth-child(odd) {
+				background: #ececec;
+			}
+
+		}
+	}
+
+	h1 {
+		color: #222222 !important;
+	}
+
+	h2 {
+		color: #222222 !important;
+		padding-left: 10px;
+	}
+}
