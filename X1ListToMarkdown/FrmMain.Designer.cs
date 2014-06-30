@@ -45,7 +45,7 @@
 			this.txtPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtPath.Location = new System.Drawing.Point(16, 17);
-			this.txtPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.txtPath.Margin = new System.Windows.Forms.Padding(4);
 			this.txtPath.Name = "txtPath";
 			this.txtPath.ReadOnly = true;
 			this.txtPath.Size = new System.Drawing.Size(524, 22);
@@ -56,7 +56,7 @@
 			// 
 			this.btnPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnPath.Location = new System.Drawing.Point(549, 15);
-			this.btnPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.btnPath.Margin = new System.Windows.Forms.Padding(4);
 			this.btnPath.Name = "btnPath";
 			this.btnPath.Size = new System.Drawing.Size(100, 28);
 			this.btnPath.TabIndex = 1;
@@ -68,7 +68,7 @@
 			// 
 			this.btnConvertToGamesWiki.Enabled = false;
 			this.btnConvertToGamesWiki.Location = new System.Drawing.Point(16, 49);
-			this.btnConvertToGamesWiki.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.btnConvertToGamesWiki.Margin = new System.Windows.Forms.Padding(4);
 			this.btnConvertToGamesWiki.Name = "btnConvertToGamesWiki";
 			this.btnConvertToGamesWiki.Size = new System.Drawing.Size(316, 28);
 			this.btnConvertToGamesWiki.TabIndex = 2;
@@ -82,7 +82,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtResult.Location = new System.Drawing.Point(16, 121);
-			this.txtResult.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.txtResult.Margin = new System.Windows.Forms.Padding(4);
 			this.txtResult.Multiline = true;
 			this.txtResult.Name = "txtResult";
 			this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -95,7 +95,7 @@
 			this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.btnCopy.Enabled = false;
 			this.btnCopy.Location = new System.Drawing.Point(16, 484);
-			this.btnCopy.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.btnCopy.Margin = new System.Windows.Forms.Padding(4);
 			this.btnCopy.Name = "btnCopy";
 			this.btnCopy.Size = new System.Drawing.Size(512, 28);
 			this.btnCopy.TabIndex = 4;
@@ -108,7 +108,7 @@
 			this.btnConvertToSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnConvertToSidebar.Enabled = false;
 			this.btnConvertToSidebar.Location = new System.Drawing.Point(333, 49);
-			this.btnConvertToSidebar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.btnConvertToSidebar.Margin = new System.Windows.Forms.Padding(4);
 			this.btnConvertToSidebar.Name = "btnConvertToSidebar";
 			this.btnConvertToSidebar.Size = new System.Drawing.Size(316, 28);
 			this.btnConvertToSidebar.TabIndex = 5;
@@ -120,7 +120,7 @@
 			this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnClear.Enabled = false;
 			this.btnClear.Location = new System.Drawing.Point(529, 484);
-			this.btnClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.btnClear.Margin = new System.Windows.Forms.Padding(4);
 			this.btnClear.Name = "btnClear";
 			this.btnClear.Size = new System.Drawing.Size(120, 28);
 			this.btnClear.TabIndex = 6;
@@ -133,7 +133,7 @@
 			this.btnConvertToGwGWiki.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnConvertToGwGWiki.Enabled = false;
 			this.btnConvertToGwGWiki.Location = new System.Drawing.Point(333, 85);
-			this.btnConvertToGwGWiki.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.btnConvertToGwGWiki.Margin = new System.Windows.Forms.Padding(4);
 			this.btnConvertToGwGWiki.Name = "btnConvertToGwGWiki";
 			this.btnConvertToGwGWiki.Size = new System.Drawing.Size(316, 28);
 			this.btnConvertToGwGWiki.TabIndex = 7;
@@ -145,7 +145,7 @@
 			// 
 			this.btnConvertToDwGWiki.Enabled = false;
 			this.btnConvertToDwGWiki.Location = new System.Drawing.Point(16, 85);
-			this.btnConvertToDwGWiki.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.btnConvertToDwGWiki.Margin = new System.Windows.Forms.Padding(4);
 			this.btnConvertToDwGWiki.Name = "btnConvertToDwGWiki";
 			this.btnConvertToDwGWiki.Size = new System.Drawing.Size(316, 28);
 			this.btnConvertToDwGWiki.TabIndex = 8;
@@ -168,7 +168,7 @@
 			this.Controls.Add(this.btnPath);
 			this.Controls.Add(this.txtPath);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.MaximizeBox = false;
 			this.MaximumSize = new System.Drawing.Size(683, 574);
 			this.MinimumSize = new System.Drawing.Size(683, 574);
